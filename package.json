@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/yacoanix/ProyectoBillsAWS/issues"
   },
-  "homepage": "https://github.com/yacoanix/ProyectoBillsAWS#readme"
+  "homepage": "https://github.com/yacoanix/ProyectoBillsAWS#readme",
+  "dependencies": {
+    "aws-sdk": "^2.292.0",
+    "uuid": "^3.3.2"
+  }
 }
