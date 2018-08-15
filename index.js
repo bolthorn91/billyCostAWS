@@ -14,7 +14,7 @@ app.get('/', function(req,res){
 
     //INSSERTAR AQUI LAS CREDENCIALES
     var creds = new AWS.Credentials({
-        accessKeyId: 'AKIAIDXDUDTN3AZSFLFA', secretAccessKey: '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'
+        accessKeyId: 'AKIAIZEESAFSFDXH3WHA', secretAccessKey: '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'
     });
     AWS.config.credentials = creds;
 
@@ -26,8 +26,8 @@ app.get('/', function(req,res){
     const params= {
     Granularity : 'DAILY',
     TimePeriod: {
-        End: '2018-05-01', /* required */
-        Start: '2018-01-01' /* required */
+        End: '2018-06-01', /* required */
+        Start: '2018-03-01' /* required */
       },
       Metrics: [
         'AmortizedCost',
