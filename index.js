@@ -10,9 +10,10 @@ app.use(express.json());
 app.get('/', function(req,res){
     // var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
     // AWS.config.credentials = credentials;
-    const creds = new AWS.Credentials({
-        accessKeyId: 'AKIAJQOAC2A3AQLU6UEQ', secretAccessKey: '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'
-    });
+
+
+    //INSSERTAR AQUI LAS CREDENCIALES
+
     AWS.config.credentials = creds;
 
     const costexplorer = new AWS.CostExplorer({
