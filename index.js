@@ -13,7 +13,9 @@ app.get('/', function(req,res){
 
 
     //INSSERTAR AQUI LAS CREDENCIALES
-
+    var creds = new AWS.Credentials({
+        accessKeyId: 'AKIAIDXDUDTN3AZSFLFA', secretAccessKey: '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'
+    });
     AWS.config.credentials = creds;
 
     const costexplorer = new AWS.CostExplorer({
