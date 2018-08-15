@@ -10,14 +10,31 @@ app.use(express.json());
 app.get('/', function(req,res){
     // var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
     // AWS.config.credentials = credentials;
-    
+    const creds = new AWS.Credentials({
+        accessKeyId: 'AKIAJQOAC2A3AQLU6UEQ', secretAccessKey: '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'
+    });
     AWS.config.credentials = creds;
-    var costexplorer = new AWS.CostExplorer({apiVersion: '2017-10-25',region:'eu-west-1'});
+
+    const costexplorer = new AWS.CostExplorer({
+        apiVersion: '2017-10-25',     
+        region:'us-east-1'}); //us west no funciona
     
-    var params=null;
+        
+    const params= {
+    Granularity : 'DAILY',
+    TimePeriod: {
+        End: '2018-05-01', /* required */
+        Start: '2018-01-01' /* required */
+      },
+      Metrics: [
+        'AmortizedCost',
+      ],
+}
+
+    
     costexplorer.getCostAndUsage(params, function(err, data) {
     if (err) console.log(err, err.stack); 
-    else     res.json(data);           
+    else     res.send(data);           
   });
 });
 
