@@ -9,15 +9,11 @@ const _PORT = options.PORT;
 
 
 app.use(express.json());
-app.use('/', awsapi)
+app.use('/awsapi', awsapi)
 
-<<<<<<< HEAD
 /*app.get('/', function(req,res){
     // var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
     // AWS.config.credentials = credentials;
-=======
-app.get('/', function(req,res){
->>>>>>> ef62f944310f323b7c7094241089721f663195fd
 
     var creds = new AWS.Credentials({
         accessKeyId: 'AKIAIZEESAFSFDXH3WHA', secretAccessKey: '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'
@@ -27,27 +23,26 @@ app.get('/', function(req,res){
     //const dateStart = req.params.
     //const dateEnd = req.params.
 
-    const costexplorer = new AWS.CostExplorer({
+    /*const costexplorer = new AWS.CostExplorer({
         apiVersion: '2017-10-25',     
         region:'us-east-1'}); //us west no funciona
     
         
     const params= {
-    Granularity : 'DAILY',
+    Granularity : 'MONTHLY',
     TimePeriod: {
-        End: '2018-06-01', // required 
-        Start: '2018-03-01' // required 
+        Start: '2018-03-01', // required 
+        End: '2018-06-01' // required 
       },
-      Metrics: [
-        'AmortizedCost',
-      ],
-}
+      Metrics: ["AmortizedCost", "BlendedCost", "UnblendedCost", "UsageQuantity"]
+    }
+
 
     
     costexplorer.getCostAndUsage(params, function(err, data) {
     if (err) console.log(err, err.stack); 
     else     res.send(data);           
-  });
+    });
 });*/
 
 app.listen(_PORT, function() {
