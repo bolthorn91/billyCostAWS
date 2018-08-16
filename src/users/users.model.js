@@ -1,22 +1,28 @@
 const mongoose = require('mongoose');
 
-var TODOschema = mongoose.Schema({
-    text: {
+var UserSchema = mongoose.Schema({
+    nombre: {
         type: String,
-        required: [true, 'El atributo text es requerido.'],
-        minlength: [10, 'Haz de introducir mínimo 10 caracteres.'],
-        validation: {
-            validator: yesNiggasSync,
-            message : 'Oye, no permito TODOs que contengan la palabra nigga'
-        },
-        unique : true 
+        required: [true, 'Nombre requerido.'],
+        minlength: [8, 'Haz de introducir mínimo 8 caracteres.'],
+        unique : false 
+    },
+    email: {
+        type: String,
+        required: [true, 'Email requerido.'],
+        unique: true
+    },
+    api_token:{
+        type: String,
+        required: [true, 'Fallo API Token.']
+    },
+    password:{
+        type: String,
     },
     createdAt: Number,
-    isCompleted: Boolean
-},
-    { versionKey: false }
-);
+    isActive: Boolean
+});
 
-var TODO = mongoose.model('todo', TODOschema);
+var TODO = mongoose.model('user', UserSchema);
 
 module.exports = TODO;

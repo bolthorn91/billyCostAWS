@@ -21,6 +21,7 @@
   "dependencies": {
     "aws-sdk": "^2.292.0",
     "axios": "^0.18.0",
+    "bcrypt": "^3.0.0",
     "express": "^4.16.3",
     "mongoose": "^5.2.8",
     "nodemon": "^1.18.3",
