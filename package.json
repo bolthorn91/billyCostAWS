@@ -21,6 +21,7 @@
   "dependencies": {
     "aws-sdk": "^2.292.0",
     "express": "^4.16.3",
+    "mongoose": "^5.2.8",
     "nodemon": "^1.18.3",
     "uuid": "^3.3.2"
   }
