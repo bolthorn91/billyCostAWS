@@ -1,14 +1,14 @@
 const express = require('express');
-const config = require('./.env');
+const config = require('../.env');
 const AWS = require('aws-sdk');
+const awsapi = require('./awsapi');
+const users = require('./users');
 const app = express();
 const options = config[process.env.NODE_ENV];
 const _PORT = options.PORT;
-
 app.use(express.json());
-const users = require('./users');
 app.use('/users', users);
-
+app.use('/awsapi', awsapi)
 // app.get('/', function (req, res) {
 
 //     var creds = new AWS.Credentials({

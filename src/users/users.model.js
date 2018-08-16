@@ -16,9 +16,10 @@ var UserSchema = mongoose.Schema({
         type: String,
         required: [true, 'Fallo API Token.']
     },
-    password:{
-        type: String,
-    },
+    password:String,
+    publicAWSKey:String,
+    privateAWSKey:String,
+    confirmAWSKeys:Boolean,
     createdAt: Number,
     isActive: Boolean
 });

@@ -3,7 +3,7 @@ const controller = require('./controller.api')
 
 module.exports = router;
 
-router.get('/', controller.getBillByKeyFake)
+router.get('/', controller.getBillByKey)
 
 
 /*const fakeParams = 

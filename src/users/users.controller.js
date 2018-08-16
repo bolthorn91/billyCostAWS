@@ -1,43 +1,43 @@
-const TODOModel = require('./users.model');
+const UserModel = require('./users.model');
 const _UPDATE_DEFAULT_CONFIG = {
     new: true,
     runValidators: true
 }
 
 module.exports = {
-    getAllTODOs: getAllTODOs,
-    getTODOById: getTODOById,
-    deleteTODOById: deleteTODOById,
-    createTODO: createTODO,
-    updateTODO: updateTODO
+    getAllUsers:getAllUsers, 
+    getUserById:getUserById, 
+    createUser:createUser, 
+    updateUser:updateUser, 
+    deleteUser:deleteUser
 }
 
-function getAllTODOs(req, res) {
-    TODOModel.find()
+function getAllUsers(req, res) {
+    UserModel.find()
         .then(response => res.json(response))
         .catch((err) => handdleError(err, res))
 
 }
-function getTODOById(req, res) {
-    TODOModel.findById(req.params.id)
+function getUserById(req, res) {
+    UserModel.findById(req.params.id)
         .then(response => res.json(response))
         .catch((err) => handdleError(err, res))
 }
 
-function deleteTODOById(req, res) {
-    TODOModel.findById(req.params.id)
+function deleteUser(req, res) {
+    UserModel.findById(req.params.id)
         .remove()
         .then(response => res.json(response))
         .catch((err) => handdleError(err, res))
 }
 
-function createTODO(req, res) {
-    TODOModel.create(req.body)
+function createUser(req, res) {
+    UserModel.create(req.body)
         .then(response => res.json(response))
         .catch((err) => handdleError(err, res))
 }
-function updateTODO(req, res) {
-    TODOModel.findByIdAndUpdate(req.params.id, req.body, _UPDATE_DEFAULT_CONFIG)
+function updateUser(req, res) {
+    UserModel.findByIdAndUpdate(req.params.id, req.body, _UPDATE_DEFAULT_CONFIG)
         .then(response => res.json(response))
         .catch((err) => handdleError(err, res))
 }
