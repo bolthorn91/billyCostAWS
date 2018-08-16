@@ -11,12 +11,14 @@ const _PORT = options.PORT;
 app.use(express.json());
 app.use('/', awsapi)
 
+<<<<<<< HEAD
 /*app.get('/', function(req,res){
     // var credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
     // AWS.config.credentials = credentials;
+=======
+app.get('/', function(req,res){
+>>>>>>> ef62f944310f323b7c7094241089721f663195fd
 
-
-    //INSSERTAR AQUI LAS CREDENCIALES
     var creds = new AWS.Credentials({
         accessKeyId: 'AKIAIZEESAFSFDXH3WHA', secretAccessKey: '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'
     });
