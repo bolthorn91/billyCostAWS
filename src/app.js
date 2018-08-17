@@ -8,7 +8,16 @@ const options = config[process.env.NODE_ENV];
 const _PORT = options.PORT;
 app.use(express.json());
 app.use('/users', users);
-app.use('/awsapi', awsapi)
+app.use('/awsapi', awsapi);
+
+//const _DB = options.DB_URL;
+
+const URI = options.URI;
+const mongoDBDataBaseName = options.mongoDBDataBaseName;
+const mongoose = require('mongoose');
+mongoose.connect(URI + mongoDBDataBaseName);
+
+
 // app.get('/', function (req, res) {
 
 //     var creds = new AWS.Credentials({
