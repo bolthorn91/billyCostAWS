@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 const uuidv1 = require('uuid/v1');
 const AWS = require('aws-sdk');
 const session = require('express-session')
@@ -12,6 +13,7 @@ const options = config[process.env.NODE_ENV];
 const _PORT = options.PORT;
 
 const app = express();
+app.use(cors())
 app.use(express.json());
 // app.use(session({
 //     secret: "secret cookie",
