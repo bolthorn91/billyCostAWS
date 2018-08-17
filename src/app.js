@@ -25,7 +25,6 @@ app.use(sessionController.checkAuth);
 //Routes
 app.use('/users', users);
 app.use('/awsapi', awsapi);
-<<<<<<< HEAD
 
 //const _DB = options.DB_URL;
 
@@ -34,11 +33,9 @@ const mongoDBDataBaseName = options.mongoDBDataBaseName;
 const mongoose = require('mongoose');
 mongoose.connect(URI + mongoDBDataBaseName);
 
-=======
 app.use('/awsapi', awsapi)
 app.use('/session', sessionApi)
 app.use('/keys', keyaws)
->>>>>>> 1e30cc850fb1c7a24135257c68682dee8d8ed2e6
 
 // app.get('/', function (req, res) {
 
