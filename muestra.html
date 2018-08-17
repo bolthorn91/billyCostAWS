@@ -12,11 +12,13 @@
     <div id="app">
        <!-- <form method="post"> -->
         <div v-for="message in messages">
-            {{ message.publicAWSKey }}
+            <b>id :</b>{{ message._id }}
             <br>
-            {{ message.privateAWSKey }}
+            <b>key public:</b> {{ message.publicAWSKey }}
             <br>
-            <button type="submit" id='button' onclick="insertKeys()">
+            <b>key private: </b>{{ message.privateAWSKey }}
+            <br><br>
+            <button type="submit" id='button' @click="awsapiCall(message._id)">
                 Hacer peticion
             </button> 
             <br><br>
@@ -32,7 +34,7 @@
     new Vue({
     el: '#app',
     data: {
-        messages: {}
+        messages: ""
     },
     created (){
     this.getKeys()
@@ -42,6 +44,14 @@
             axios.get('http://localhost:4000/keys')
             .then( 
             res => {this.messages = res.data})
+            .catch(function (error) {
+            console.log(error);
+            });
+        },
+        awsapiCall(id){
+            axios.get('http://localhost:4000/awsapi?_id='+id)
+            .then( 
+            res => {console.log(res.data)})
             .catch(function (error) {
             console.log(error);
             });

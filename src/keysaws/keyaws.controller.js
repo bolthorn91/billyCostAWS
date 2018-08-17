@@ -6,7 +6,7 @@ const _UPDATE_DEFAULT_CONFIG = {
 
 module.exports = {
     getAllKeys:getAllKeys, 
-    // getUserById:getUserById, 
+    getKeyById:getKeyById, 
     createKeys:createKeys, 
     // updateUser:updateUser, 
     // deleteUser:deleteUser
@@ -18,11 +18,11 @@ function getAllKeys(req, res) {
         .catch((err) => handdleError(err, res))
 
 }
-// function getUserById(req, res) {
-//     UserModel.findById(req.params.id)
-//         .then(response => res.json(response))
-//         .catch((err) => handdleError(err, res))
-// }
+function getKeyById(req, res) {
+    KeysModel.findById(req.params.id)
+        .then(response => res.json(response))
+        .catch((err) => handdleError(err, res))
+}
 
 // function deleteUser(req, res) {
 //     UserModel.findById(req.params.id)
