@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { getAllUsers, getUserById, createUser, updateUser, deleteUser } = require ('./users.controller');
+const { getAllUsers, getUserById, createUser, updateUser, deleteUser } = require ('./keyaws.controller');
 
 router.get('/', getAllUsers);
 router.get('/:id', getUserById);

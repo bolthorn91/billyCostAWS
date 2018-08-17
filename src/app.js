@@ -1,14 +1,31 @@
 const express = require('express');
-const config = require('../.env');
+const uuidv1 = require('uuid/v1');
 const AWS = require('aws-sdk');
+const session = require('express-session')
+const sessionController = require('./session/session.controller')
+const sessionApi = require ('./session')
 const awsapi = require('./awsapi');
+const keyaws = require('./keysaws');
 const users = require('./users');
-const app = express();
+const config = require('../.env');
 const options = config[process.env.NODE_ENV];
 const _PORT = options.PORT;
+
+const app = express();
 app.use(express.json());
+app.use(session({
+    secret: "secret cookie",
+    saveUninitialized: false,
+    resave: false,
+    cookie: { maxAge: 10000 }
+}))
+app.use(sessionController.checkAuth);
+
+
+//Routes
 app.use('/users', users);
 app.use('/awsapi', awsapi);
+<<<<<<< HEAD
 
 //const _DB = options.DB_URL;
 
@@ -17,6 +34,11 @@ const mongoDBDataBaseName = options.mongoDBDataBaseName;
 const mongoose = require('mongoose');
 mongoose.connect(URI + mongoDBDataBaseName);
 
+=======
+app.use('/awsapi', awsapi)
+app.use('/session', sessionApi)
+app.use('/keys', keyaws)
+>>>>>>> 1e30cc850fb1c7a24135257c68682dee8d8ed2e6
 
 // app.get('/', function (req, res) {
 
@@ -32,14 +54,12 @@ mongoose.connect(URI + mongoDBDataBaseName);
 
 
 //     const params = {
-//         Granularity: 'DAILY',
+//         Granularity: 'MONTHLY',
 //         TimePeriod: {
 //             End: '2018-06-01', /* required */
 //             Start: '2018-03-01' /* required */
 //         },
-//         Metrics: [
-//             'AmortizedCost',
-//         ],
+//         Metrics: ["AmortizedCost", "BlendedCost", "UnblendedCost", "UsageQuantity"]
 //     }
 
 
