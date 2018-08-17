@@ -15,9 +15,6 @@
         <button type="submit" id='button' onclick="insertKeys()">
             insertar
         </button>
-        <button type="submit" id='button' onclick="getKeys()">
-            recibir claves
-        </button>
 
        <!-- </form> --> 
     </div>
@@ -27,7 +24,7 @@
             const private = document.getElementById('private').value
             console.log(public, private)
 
-            axios.post('http://localhost:4000/keys', {'public': public, 'private': private} )
+            axios.post('http://localhost:4000/keys', {'publicAWSKey': public, 'privateAWSKey': private} )
             .then(res => console.log(res))
             .catch(function (error) {
             console.log(error);

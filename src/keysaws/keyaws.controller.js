@@ -32,7 +32,7 @@ function getAllKeys(req, res) {
 // }
 
 function createKeys(req, res) {
-    console.log(req.body)
+    req.body.createdAt=new Date()
     KeysModel.create(req.body)
         .then(response => res.json(response))
         .catch((err) => handdleError(err, res))
