@@ -8,7 +8,7 @@ const options = config[process.env.NODE_ENV];
 const _PORT = options.PORT;
 app.use(express.json());
 app.use('/users', users);
-app.use('/awsapi', awsapi)
+app.use('/awsapi', awsapi);
 // app.get('/', function (req, res) {
 
 //     var creds = new AWS.Credentials({
@@ -23,14 +23,12 @@ app.use('/awsapi', awsapi)
 
 
 //     const params = {
-//         Granularity: 'DAILY',
+//         Granularity: 'MONTHLY',
 //         TimePeriod: {
 //             End: '2018-06-01', /* required */
 //             Start: '2018-03-01' /* required */
 //         },
-//         Metrics: [
-//             'AmortizedCost',
-//         ],
+//         Metrics: ["AmortizedCost", "BlendedCost", "UnblendedCost", "UsageQuantity"]
 //     }
 
 
