@@ -24,6 +24,6 @@ var UserSchema = mongoose.Schema({
     isActive: Boolean
 });
 
-var TODO = mongoose.model('user', UserSchema);
+var keys = mongoose.model('awskey', UserSchema);
 
-module.exports = TODO;
+module.exports = keys;
