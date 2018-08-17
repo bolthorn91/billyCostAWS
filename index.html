@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div>
+       <!-- <form method="post"> -->
+        <input type="text" name="" id="public">
+        <input type="text" name="" id="private">
+        <a href="muestra.html">
+            <button type="submit" id='button' onclick="insertKeys()">
+            insertar
+        </button>
+    </a>
+
+       <!-- </form> --> 
+    </div>
+        <script>
+        function insertKeys() {
+            const public = document.getElementById('public').value
+            const private = document.getElementById('private').value
+            console.log(public, private)
+
+            axios.post('http://localhost:4000/keys', {'publicAWSKey': public, 'privateAWSKey': private} )
+            .then(res => console.log(res))
+            .catch(function (error) {
+            console.log(error);
+        });
+    }    
+        function getKeys() {
+            axios.get('http://localhost:4000/keys')
+            .then(res => console.log(res))
+            .catch(function (error) {
+            console.log(error);
+        });
+    }    
+        </script>
+    
+
+</body>
+</html>
