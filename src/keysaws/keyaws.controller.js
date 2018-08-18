@@ -6,6 +6,7 @@ const _UPDATE_DEFAULT_CONFIG = {
 
 module.exports = {
     getAllKeys:getAllKeys, 
+    getLastKey:getLastKey,
     getKeyById:getKeyById, 
     createKeys:createKeys, 
     // updateUser:updateUser, 
@@ -18,8 +19,23 @@ function getAllKeys(req, res) {
         .catch((err) => handdleError(err, res))
 
 }
+
+function getLastKey(req, res) {
+    KeysModel.find().sort({_id:-1}).limit(1)
+        .then(response => res.json(response))
+        .catch((err) => handdleError(err, res))
+
+}
+
 function getKeyById(req, res) {
     KeysModel.findById(req.params.id)
+        .then(response => res.json(response))
+        .catch((err) => handdleError(err, res))
+}
+
+function createKeys(req, res) {
+    req.body.createdAt=new Date()
+    KeysModel.create(req.body)
         .then(response => res.json(response))
         .catch((err) => handdleError(err, res))
 }
@@ -31,12 +47,6 @@ function getKeyById(req, res) {
 //         .catch((err) => handdleError(err, res))
 // }
 
-function createKeys(req, res) {
-    req.body.createdAt=new Date()
-    KeysModel.create(req.body)
-        .then(response => res.json(response))
-        .catch((err) => handdleError(err, res))
-}
 // function updateUser(req, res) {
 //     UserModel.findByIdAndUpdate(req.params.id, req.body, _UPDATE_DEFAULT_CONFIG)
 //         .then(response => res.json(response))

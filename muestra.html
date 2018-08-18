@@ -3,13 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
+    <title>APICall</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 </head>
 <body>
     <div id="app">
+        <a href="index.html">back</a>
        <!-- <form method="post"> -->
         <div v-for="message in messages">
             <b>id :</b>{{ message._id }}
@@ -41,17 +42,16 @@
     },
     methods:{
         getKeys() {
-            axios.get('http://localhost:4000/keys')
-            .then( 
-            res => {this.messages = res.data})
+            axios.get('http://localhost:4000/keys/last')
+            .then( res => {this.messages = res.data})
             .catch(function (error) {
-            console.log(error);
+                console.log(error);
             });
+            console.log(this.messages)
         },
         awsapiCall(id){
             axios.get('http://localhost:4000/awsapi?_id='+id)
-            .then( 
-            res => {console.log(res.data)})
+            .then( res => {console.log(res.data)})
             .catch(function (error) {
             console.log(error);
             });
