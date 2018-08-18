@@ -3,4 +3,5 @@ const controller = require('./controller.api')
 
 module.exports = router;
 
-router.get('/', controller.getBillByKey)
+router.get('/', controller.getBillByKeyFake)
+router.get('/real', controller.getBillByKey)

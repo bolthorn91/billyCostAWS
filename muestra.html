@@ -19,8 +19,11 @@
             <br>
             <b>key private: </b>{{ message.privateAWSKey }}
             <br><br>
-            <button type="submit" id='button' @click="awsapiCall(message._id)">
-                Hacer peticion
+            <button type="submit" id='button' @click="awsapiCall(message.publicAWSKey, message.privateAWSKey)">
+                Hacer peticion 
+            </button> 
+            <button type="submit" id='button' @click="getKeyId(message._id)">
+                conseguir id 
             </button> 
             <br><br>
         </div>
@@ -47,17 +50,26 @@
             .catch(function (error) {
                 console.log(error);
             });
-            console.log(this.messages)
         },
-        awsapiCall(id){
-            axios.get('http://localhost:4000/awsapi?_id='+id)
-            .then( res => {console.log(res.data)})
+        getKeyId(id) {
+            axios.get('http://localhost:4000/keys/'+id)
+            .then( res => console.log(res.data))
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+
+        awsapiCall(publicAWSKey, privateAWSKey){
+            axios.get('http://localhost:4000/awsapi?publicAWSKey='+publicAWSKey+'&privateAWSKey='+ privateAWSKey)
+            .then( res => console.log(res.data))
             .catch(function (error) {
             console.log(error);
             });
         }
-    },
-    })
+    }
+})
+
+
     </script>
     
 
