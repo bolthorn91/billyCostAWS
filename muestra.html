@@ -18,6 +18,9 @@
             <b>key public:</b> {{ message.publicAWSKey }}
             <br>
             <b>key private: </b>{{ message.privateAWSKey }}
+            <div v-for="costs in cost">
+                Gastado hoy: {{costs.Total.AmortizedCost.Amount}}&nbsp;{{costs.Total.AmortizedCost.Unit}}
+            </div>
             <br><br>
             <button type="submit" id='button' @click="awsapiCall(message.publicAWSKey, message.privateAWSKey)">
                 Hacer peticion 
@@ -38,7 +41,8 @@
     new Vue({
     el: '#app',
     data: {
-        messages: ""
+        messages: "",
+        cost:""
     },
     created (){
     this.getKeys()
@@ -61,7 +65,7 @@
 
         awsapiCall(publicAWSKey, privateAWSKey){
             axios.get('http://localhost:4000/awsapi?publicAWSKey='+publicAWSKey+'&privateAWSKey='+ privateAWSKey)
-            .then( res => console.log(res.data))
+            .then( res =>  {this.cost=res.data.ResultsByTime})
             .catch(function (error) {
             console.log(error);
             });
