@@ -6,87 +6,35 @@ key private: KWR2Ssep1iIB9UGVYcaIi06fK8RwCPi0GtsKdeTs
 */
 
 const fakeParams = {
-        "ResultsByTime": [
-            {
-                "TimePeriod": {
-                    "Start": "2018-03-01",
-                    "End": "2018-04-01"
-                },
-                "Total": {
-                    "AmortizedCost": {
-                        "Amount": "0",
-                        "Unit": "USD"
-                    },
-                    "BlendedCost": {
-                        "Amount": "0",
-                        "Unit": "USD"
-                    },
-                    "UnblendedCost": {
-                        "Amount": "0",
-                        "Unit": "USD"
-                    },
-                    "UsageQuantity": {
-                        "Amount": "0",
-                        "Unit": "N/A"
-                    }
-                },
-                "Groups": [],
-                "Estimated": true
+    "ResultsByTime": [
+        {
+            "TimePeriod": {
+                "Start": "2018-08-18",
+                "End": "2018-08-19"
             },
-            {
-                "TimePeriod": {
-                    "Start": "2018-04-01",
-                    "End": "2018-05-01"
+            "Total": {
+                "AmortizedCost": {
+                    "Amount": "0",
+                    "Unit": "USD"
                 },
-                "Total": {
-                    "AmortizedCost": {
-                        "Amount": "0",
-                        "Unit": "USD"
-                    },
-                    "BlendedCost": {
-                        "Amount": "0",
-                        "Unit": "USD"
-                    },
-                    "UnblendedCost": {
-                        "Amount": "0",
-                        "Unit": "USD"
-                    },
-                    "UsageQuantity": {
-                        "Amount": "0",
-                        "Unit": "N/A"
-                    }
+                "BlendedCost": {
+                    "Amount": "0",
+                    "Unit": "USD"
                 },
-                "Groups": [],
-                "Estimated": true
+                "UnblendedCost": {
+                    "Amount": "0",
+                    "Unit": "USD"
+                },
+                "UsageQuantity": {
+                    "Amount": "63.3472910715",
+                    "Unit": "N/A"
+                }
             },
-            {
-                "TimePeriod": {
-                    "Start": "2018-05-01",
-                    "End": "2018-06-01"
-                },
-                "Total": {
-                    "AmortizedCost": {
-                        "Amount": "0",
-                        "Unit": "USD"
-                    },
-                    "BlendedCost": {
-                        "Amount": "0",
-                        "Unit": "USD"
-                    },
-                    "UnblendedCost": {
-                        "Amount": "0",
-                        "Unit": "USD"
-                    },
-                    "UsageQuantity": {
-                        "Amount": "0",
-                        "Unit": "N/A"
-                    }
-                },
-                "Groups": [],
-                "Estimated": true
-            }
-        ]
-    }
+            "Groups": [],
+            "Estimated": true
+        }
+    ]
+}
 
 
 module.exports = {
@@ -101,8 +49,15 @@ function getBillByKeyFake(req,res){
 function getBillByKey(req,res){
     const publicAWSKey= req.query.publicAWSKey
     const privateAWSKey= req.query.privateAWSKey
-
-    console.log(publicAWSKey, privateAWSKey)
+    let fecha = new Date();
+    let fechAct= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
+    let tiempo=fecha.getTime();
+    let milisegundos=parseInt(1*24*60*60*1000);
+    total=fecha.setTime(tiempo-milisegundos);
+    day=fecha.getDate();
+    month=fecha.getMonth()+1;
+    year=fecha.getFullYear();
+    let fechAnt= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
 
     var creds = new AWS.Credentials({
          accessKeyId: publicAWSKey, secretAccessKey: privateAWSKey
@@ -116,8 +71,8 @@ function getBillByKey(req,res){
      const params = {
          Granularity: 'DAILY',
          TimePeriod: {
-             Start: '2018-06-01', // required 
-             End: '2018-06-10', // required 
+             Start: fechAnt, // required 
+             End: fechAct, // required 
         },
          Metrics: ["AmortizedCost", "BlendedCost", "UnblendedCost", "UsageQuantity"]
      }
