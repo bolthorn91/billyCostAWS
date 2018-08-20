@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Formulario Usuario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- <form method="post"> -->
+            <h1>Darse de alta</h1>
+        <div class="form-container">
+            <input type="text" name="" id="name" placeholder="insert your first name">
+            <input type="text" name="" id="email" placeholder="insert your email">
+            <input type="text" name="" id="password" placeholder="insert your password">
+            
+            
+            <a class="actionButton" onclick="insertUser()">
+                Enviar
+            </a>
+            <a href="index2.html">Login</a>
+            <!-- </form> -->
+        </div>
+    </div>
+    <script>
+        async function insertUser() {
+            const userName = document.getElementById('name').value;
+            const correo = document.getElementById('email').value
+            const contraseña = document.getElementById('password').value;
+            const apiToken = "123456789";
+
+            let insertUser = axios.post('http://localhost:4000/users', { 'nombre': userName, 'email' : correo, 'api_token': apiToken, 'password':contraseña, 'isActive': false })
+                .then(res => console.log(res))
+                .catch(function (error) {
+                    console.log(error);
+                });
+            let waiting = await insertUser
+
+
+            const loadUrl = function () {
+                window.location.href = "./muestra.html";
+            }
+            loadUrl()
+        }    
+        
+        function getKeys() {
+            axios.get('http://localhost:4000/users')
+                .then(res => console.log(res))
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    </script>
+</body>
+
+</html>
+
+
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .form-container {
+        background: white;
+        border: 0 none;
+        border-radius: 3px;
+        box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+        padding: 20px 30px;
+        box-sizing: border-box;
+        width: 50%;
+        margin: 0 10%;
+    }
+
+
+    input {
+        padding: 10px 20px;
+        border: 1px solid #999;
+        border-radius: 3px;
+        display: block;
+        width: 100%;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+        outline: none;
+        text-align: center;
+
+    }
+
+    a {
+        width: 100px;
+        background: #27AE60;
+        font-weight: bold;
+        color: white;
+        border: 0 none;
+        border-radius: 1px;
+        cursor: pointer;
+        padding: 10px 5px;
+        margin: 10px 5px;
+    }
+</style>

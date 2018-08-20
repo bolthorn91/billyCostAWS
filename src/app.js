@@ -36,7 +36,6 @@ const URI = options.URI;
 const mongoDBDataBaseName = options.mongoDBDataBaseName;
 const mongoose = require('mongoose');
 mongoose.connect(URI);
-
 app.listen(_PORT, function () {
     console.log("Escuchando en el puerto " + _PORT);
 })

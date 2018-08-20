@@ -17,13 +17,13 @@ var UserSchema = mongoose.Schema({
         required: [true, 'Fallo API Token.']
     },
     password:String,
-    publicAWSKey:String,
-    privateAWSKey:String,
-    confirmAWSKeys:Boolean,
+    //publicAWSKey:String,
+    //privateAWSKey:String,
+    //confirmAWSKeys:Boolean,
     createdAt: Number,
     isActive: Boolean
 });
 
-var TODO = mongoose.model('user', UserSchema);
+var users = mongoose.model('user', UserSchema);
 
-module.exports = TODO;
+module.exports = users;
