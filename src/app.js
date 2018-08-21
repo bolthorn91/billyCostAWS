@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors')
-const uuidv1 = require('uuid/v1');
-const AWS = require('aws-sdk');
+//const uuidv1 = require('uuid/v1');
+//const AWS = require('aws-sdk');
 const session = require('express-session')
-const sessionController = require('./session/session.controller')
+//const sessionController = require('./session/session.controller')
 const sessionApi = require ('./session')
 const awsapi = require('./awsapi');
 const keyaws = require('./keysaws');
@@ -15,17 +15,22 @@ const _PORT = options.PORT;
 const app = express();
 app.use(cors())
 app.use(express.json());
+
 // app.use(session({
-//     secret: "secret cookie",
-//     saveUninitialized: false,
+//     secret: "secretcookie",
 //     resave: false,
-//     cookie: { maxAge: 10000 }
+//     saveUninitialized: false,
+//     // cookie: { maxAge: 10000 }
 // }))
-// app.use(sessionController.checkAuth);
+//app.use(sessionController.checkAuth);
 
 
 
 //Routes
+app.get("/", function(req,res){
+    console.log(req.session.user_id)
+    res.send("pene")
+})
 app.use('/users', users);
 app.use('/awsapi', awsapi);
 app.use('/session', sessionApi);
@@ -33,7 +38,6 @@ app.use('/keys', keyaws);
 
 
 const URI = options.URI;
-const mongoDBDataBaseName = options.mongoDBDataBaseName;
 const mongoose = require('mongoose');
 mongoose.connect(URI);
 app.listen(_PORT, function () {

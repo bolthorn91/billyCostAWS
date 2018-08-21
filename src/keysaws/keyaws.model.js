@@ -7,5 +7,4 @@ var KeysSchema = mongoose.Schema({
 });
 
 var keys = mongoose.model('penes', KeysSchema);
-console.log("2")
 module.exports = keys;

@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const { getAllKeys, getLastKey, getKeyById,createKeys/*,updateUser, deleteUser*/ } = require ('./keyaws.controller');
 module.exports = router;
-console.log("1")
 router.get('/', getAllKeys);
 router.get('/last', getLastKey);
 router.get('/:id', getKeyById);

@@ -12,13 +12,15 @@ var UserSchema = mongoose.Schema({
         required: [true, 'Email requerido.'],
         unique: true
     },
-    api_token:{
-        type: String,
-        required: [true, 'Fallo API Token.']
-    },
+    // api_token:{
+    //     type: String,
+    //     required: [true, 'Fallo API Token.']
+    // },
     password:String,
     createdAt: Number,
-    isActive: Boolean
+    isActive: Boolean,
+    subDay: Boolean,
+    subMonth: Boolean,
 });
 
 var users = mongoose.model('user', UserSchema);
