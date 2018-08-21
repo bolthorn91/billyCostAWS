@@ -12,8 +12,7 @@ module.exports = {
     createUser:createUser, 
     updateUser:updateUser, 
     deleteUser:deleteUser,
-    validateEmail:validateEmail,
-    validateSession:validateSession
+    validateEmail:validateEmail
 }
 
 function getAllUsers(req, res) {
@@ -40,9 +39,6 @@ function createUser(req, res) {
     req.body.isActive=false;
     req.body.subDay=false;
     req.body.subMonth=false;
-    // let pass = bcrypt(req.body.password);
-    // console.log(pass)
-    // req.body.password= pass;
     UserModel.create(req.body)
         .then((response) => {
             sendEmail(response._id, response.email)
@@ -62,18 +58,6 @@ function updateUser(req, res) {
     UserModel.findByIdAndUpdate(req.params.id, req.body, _UPDATE_DEFAULT_CONFIG)
         .then(response => res.json(response))
         .catch((err) => handdleError(err, res))
-}
-
-function validateSession(req, res){
-    UserModel.findOne({
-        email:req.body.email,
-        password:req.body.password
-    })
-    .then((response) => {
-        req.session.user_id =response._id;
-        res.json(response)
-    })
-    .catch((err) => handdleError(err, res))
 }
 
 function handdleError(err, res){
