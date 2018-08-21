@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const bcrypt = require('bcrypt');
 var UserSchema = mongoose.Schema({
     nombre: {
         type: String,
@@ -12,16 +12,16 @@ var UserSchema = mongoose.Schema({
         required: [true, 'Email requerido.'],
         unique: true
     },
-    // api_token:{
-    //     type: String,
-    //     required: [true, 'Fallo API Token.']
-    // },
     password:String,
     createdAt: Number,
     isActive: Boolean,
     subDay: Boolean,
     subMonth: Boolean,
 });
+
+// UserSchema.methods.comparePassword = function(password){
+//     return bcrypt.compareSync(password, this.hash_password);
+// }
 
 var users = mongoose.model('user', UserSchema);
 
