@@ -17,6 +17,7 @@ var UserSchema = mongoose.Schema({
     isActive: Boolean,
     subDay: Boolean,
     subMonth: Boolean,
+    token: String
 });
 
 // UserSchema.methods.comparePassword = function(password){

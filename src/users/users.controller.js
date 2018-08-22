@@ -1,6 +1,8 @@
 const UserModel = require('./users.model');
 const nodemailer = require('nodemailer');
 var bcrypt = require('bcrypt');
+const SECRET = "tumamasita"
+const jwt = require('jsonwebtoken');
 const _UPDATE_DEFAULT_CONFIG = {
     new: true,
     runValidators: true
@@ -12,7 +14,8 @@ module.exports = {
     createUser:createUser, 
     updateUser:updateUser, 
     deleteUser:deleteUser,
-    validateEmail:validateEmail
+    validateEmail:validateEmail,
+    sessionUser:sessionUser
 }
 
 function getAllUsers(req, res) {
@@ -42,6 +45,11 @@ function createUser(req, res) {
     UserModel.create(req.body)
         .then((response) => {
             sendEmail(response._id, response.email)
+            let user = { 
+                'username': response.nombre 
+            } 
+            let token = jwt.sign(user, SECRET, { expiresIn: 60*60*1 })
+            response.token=token;
             res.json(response);
         })
         .catch((err) => handdleError(err, res))
@@ -52,6 +60,27 @@ function validateEmail(req, res) {
      UserModel.findByIdAndUpdate(req.params.id, req.body, _UPDATE_DEFAULT_CONFIG)
         .then(response => res.json(response))
         .catch((err) => handdleError(err, res))
+}
+
+function sessionUser(req,res){
+    UserModel.findOne({
+        email:req.body.email,
+        password:req.body.password
+    })
+    .then((response) => {
+        if(response!=null){
+            var user = { 
+                'username': response.nombre 
+            } 
+            var token = jwt.sign(user, SECRET, { expiresIn: 60*60*1 })
+            res.json({token:token})
+        }else{
+            res.status(401).send({
+                error: 'usuario o contraseña inválidos'
+            })
+        } 
+    })
+    .catch((err) => handdleError(err, res))
 }
 
 function updateUser(req, res) {
@@ -91,8 +120,6 @@ function sendEmail(id, email){
         if(error) {
             return console.log(error);
         }
-        // console.log("mensaje enviado")
-        // console.log(info);
     });
 }
    
