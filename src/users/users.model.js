@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-var UserSchema = mongoose.Schema({
+const UserSchema = mongoose.Schema({
     nombre: {
         type: String,
         required: [true, 'Nombre requerido.'],
@@ -17,6 +17,8 @@ var UserSchema = mongoose.Schema({
     isActive: Boolean,
     subDay: Boolean,
     subMonth: Boolean,
+    lastDayCall: Number,
+    lastMonthCall: Number,
     token: String
 });
 
@@ -24,6 +26,6 @@ var UserSchema = mongoose.Schema({
 //     return bcrypt.compareSync(password, this.hash_password);
 // }
 
-var users = mongoose.model('user', UserSchema);
+const users = mongoose.model('user', UserSchema);
 
 module.exports = users;

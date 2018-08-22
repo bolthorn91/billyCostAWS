@@ -1,9 +1,14 @@
 const mongoose = require('mongoose');
 const schedule = require('node-schedule')
 const axios = require('axios')
-const cronjob = schedule.scheduleJob('10 * * * * *', function () {
-    subscriptionExec()
-})
+const config = require('../../.env');
+const userModel = require('../users/users.model')
+const options = config[process.env.NODE_ENV];
+if (options.GET === true) {
+    const cronjob = schedule.scheduleJob('1 * * * * *', function () {
+        subscriptionExec()
+    })
+}
 const _UPDATE_DEFAULT_CONFIG = {
     new: true,
     runValidators: true
@@ -22,38 +27,12 @@ module.exports = {
 
 }
 
-/*function createUser() {
-    mockModel.create(
-        {
-            name: "pepejuan",
-            subscribed: true,
-            lastDayCall: 0
-        },
-        {
-            name: "antonio",
-            subscribed: true,
-            lastDayCall: 3
-        },
-        {
-            name: "manuel",
-            subscribed: true,
-            lastDayCall: 6
-        },
-        {
-            name: "alfonso",
-            subscribed: false,
-            lastDayCall: 21
-        },
-    )
-        .then(response => response)
-}*/
-
 function subscriptionExec() {
     const date = new Date();
     const currentDayOfMonth = { day: date.getDate(), month: date.getMonth() }
     
-    function getAllUsersSubs(req, res) {
-        mockModel.find()
+    function getAllUsersSubs() {
+        userModel.find()
         .then(response => {
                 getSubscriptionVal(response)
             })
@@ -63,12 +42,13 @@ function subscriptionExec() {
     function getSubscriptionVal(usersData) {
         for (let i = 0; i < usersData.length; i++) {
             const user = usersData[i]
-            if (user.subscribed === true && user.lastDayCall != currentDayOfMonth.day) {
+            if (user.subDay === true && user.lastDayCall != currentDayOfMonth.day) {
                 updateUser(user)
                 launchSlackBot()
             }
-            if (user.subscribed === false) {
+            if (user.subDay === false) {
                 console.log('este usuario no esta suscrito', user._id)
+                realDaily(user)
             }
             else {
                 console.log('el usuario' + user._id + 'ya hizo la peticion')
@@ -81,7 +61,7 @@ function subscriptionExec() {
     function updateUser(userData) {
         console.log('a estos usuarios se les esta cambiando el dia:', userData)
         const body = { lastDayCall: currentDayOfMonth.day }
-        mockModel.findByIdAndUpdate(userData._id, body, _UPDATE_DEFAULT_CONFIG)
+        userModel.findByIdAndUpdate(userData._id, body, _UPDATE_DEFAULT_CONFIG)
             .then(response => console.log(response))
             .catch((err) => handdleError(err, res))
     }
@@ -92,11 +72,13 @@ function subscriptionExec() {
             .catch((err) => handdleError(err, res))
     }
 
+    function realDaily(userData){
+        axios.get('http://localhost:4000/users/'+userData._id)
+        .then(response => console.log(response.data))
+        //.catch((err) => handdleError(err, res))
+    }
 }
 
 function handdleError(err, res) {
     return res.status(400).json(err)
 }
-
-
-subscriptionExec()
