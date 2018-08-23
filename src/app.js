@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-const sessionApi = require ('./session')
 const awsapi = require('./awsapi');
 const keyaws = require('./keysaws');
 const users = require('./users');
@@ -16,39 +15,30 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-// app.use(session({
-//     secret: "secretcookie",
-//     resave: false,
-//     saveUninitialized: false,
-//     // cookie: { maxAge: 10000 }
-// }))
-//app.use(sessionController.checkAuth);
 
 //Routes
 app.use('/users', users);
 
 // Midleware de json web token
-app.use(function(req, res, next){
-    var token = req.headers['authorization']
-    if(!token){
-        res.status(401).send({
-          error: "Es necesario el token de autenticación"
-        })
-        return
-    }
-    token = token.replace('Bearer ', '')
-    jwt.verify(token, SECRET, function(err, user) {
-      if (err) {
-        res.status(401).send({
-          error: 'Token inválido'
-        })
-      }
-      next();
-    })
-});
-
+// app.use(function(req, res, next){
+//     var token = req.headers['authorization']
+//     if(!token){
+//         res.status(401).send({
+//           error: "Es necesario el token de autenticación"
+//         })
+//         return
+//     }
+//     token = token.replace('Bearer ', '')
+//     jwt.verify(token, SECRET, function(err, user) {
+//       if (err) {
+//         res.status(401).send({
+//           error: 'Token inválido'
+//         })
+//       }
+//       next();
+//     })
+// });
 app.use('/awsapi', awsapi);
-app.use('/session', sessionApi);
 app.use('/keys', keyaws);
 
 
