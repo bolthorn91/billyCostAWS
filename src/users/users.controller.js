@@ -42,6 +42,8 @@ function createUser(req, res) {
     req.body.isActive=false;
     req.body.subDay=false;
     req.body.subMonth=false;
+    req.body.lastDayCall= 0,
+    req.body.lastMonthCall= 0,
     UserModel.create(req.body)
         .then((response) => {
             sendEmail(response._id, response.email)
