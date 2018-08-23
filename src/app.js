@@ -3,6 +3,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const sub = require('./subscription')
+const pruebas = require('./subscription/pruebas')
 const awsapi = require('./awsapi');
 const keyaws = require('./keysaws');
 const users = require('./users');

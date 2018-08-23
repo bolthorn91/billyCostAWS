@@ -1,9 +1,4 @@
-const axios = require('axios')
 const AWS = require('aws-sdk');
-/*
-key public: AKIAIZEESAFSFDXH3WHA 
-key private: KWR2Ssep1iIB9UGVYcaIi06fK8RwCPi0GtsKdeTs 
-*/
 
 const fakeParams = {
     "ResultsByTime": [
@@ -36,17 +31,36 @@ const fakeParams = {
     ]
 }
 
-
 module.exports = {
     getBillByKeyFake: getBillByKeyFake,
-    getBillByKey: getBillByKey
+    getBillDay: getBillDay,
+    getBillMonth: getBillMonth
 }
 
+const jsonParams = require('./data/awsparams.json')
+
 function getBillByKeyFake(req,res){
+    const publicAWSKey= req.query.publicAWSKey
+    const privateAWSKey= req.query.privateAWSKey
+    const reqParams=req.query.params
+    
+    let fecha = new Date();
+    let fechAct= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
+    let tiempo=fecha.getTime();
+    let milisegundos=parseInt(1*24*60*60*1000);
+    total=fecha.setTime(tiempo-milisegundos);
+    day=fecha.getDate();
+    month=fecha.getMonth()+1;
+    year=fecha.getFullYear();
+    let fechAnt= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
+    console.log (fechAnt, fechAct, jsonParams.Metrics)
+
+    if(reqParams === jsonParams.Metrics)
+
     res.send(fakeParams)
 }
 
-function getBillByKey(req,res){
+function getBillDay(req,res){
     const publicAWSKey= req.query.publicAWSKey
     const privateAWSKey= req.query.privateAWSKey
     let fecha = new Date();
@@ -59,7 +73,7 @@ function getBillByKey(req,res){
     year=fecha.getFullYear();
     let fechAnt= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
 
-    var creds = new AWS.Credentials({
+    const creds = new AWS.Credentials({
          accessKeyId: publicAWSKey, secretAccessKey: privateAWSKey
      });
      AWS.config.credentials = creds;
@@ -68,6 +82,49 @@ function getBillByKey(req,res){
          apiVersion: '2017-10-25',
          region: 'us-east-1'
      }); //us west no funcionas
+     const params = {
+         Granularity: 'DAILY',
+         TimePeriod: {
+             Start: fechAnt, // required 
+             End: fechAct, // required 
+        },
+         Metrics: ["AmortizedCost", "BlendedCost", "UnblendedCost", "UsageQuantity"]
+     }
+
+
+     costexplorer.getCostAndUsage(params, function (err, data) {
+         if (err) console.log(err, err.stack);
+         else res.send(data);
+     })
+
+}
+
+
+function getBillMonth(req,res){
+    const publicAWSKey= req.query.publicAWSKey
+    const privateAWSKey= req.query.privateAWSKey
+    
+    let fecha = new Date();
+    let fechAct= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
+    let tiempo=fecha.getTime();
+    let milisegundos=parseInt(1*24*60*60*1000);
+    total=fecha.setTime(tiempo-milisegundos);
+    day=fecha.getDate();
+    month=fecha.getMonth()+1;
+    year=fecha.getFullYear();
+    let fechAnt= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
+
+    const creds = new AWS.Credentials({
+         accessKeyId: publicAWSKey, secretAccessKey: privateAWSKey
+     });
+     AWS.config.credentials = creds;
+
+     const costexplorer = new AWS.CostExplorer({
+         apiVersion: '2017-10-25',
+         region: 'us-east-1'
+     }); //us west no funcionas
+
+
      const params = {
          Granularity: 'DAILY',
          TimePeriod: {

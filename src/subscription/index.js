@@ -48,10 +48,10 @@ function subscriptionExec() {
             }
             if (user.subDay === false) {
                 console.log('este usuario no esta suscrito', user._id)
-                realDaily(user)
+                dayGet(user)
             }
             else {
-                console.log('el usuario' + user._id + 'ya hizo la peticion')
+                console.log('el usuario ' + user._id + 'ya hizo la peticion')
             }
         }
     }
@@ -72,7 +72,7 @@ function subscriptionExec() {
             .catch((err) => handdleError(err, res))
     }
 
-    function realDaily(userData){
+    function dayGet(userData){
         axios.get('http://localhost:4000/users/'+userData._id)
         .then(response => console.log(response.data))
         //.catch((err) => handdleError(err, res))
