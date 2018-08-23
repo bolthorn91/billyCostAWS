@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const sub = require('./subscription')
 const pruebas = require('./subscription/pruebas')
 const awsapi = require('./awsapi');
-const keyaws = require('./keysaws');
+const secure = require('./secure');
 const users = require('./users');
 const config = require('../.env');
 const SECRET = "tumamasita" 
@@ -41,7 +41,8 @@ app.use(function(req, res, next){
     })
 });
 app.use('/awsapi', awsapi);
-app.use('/keys', keyaws);
+app.use('/secure', secure);
+
 
 
 const URI = options.URI;
