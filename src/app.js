@@ -2,6 +2,11 @@ const express = require('express');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+<<<<<<< HEAD
+=======
+const sub = require('./subscription')
+const sessionApi = require ('./session')
+>>>>>>> 4bbb1c6058310b9709f4a7b22d47d5cb5ba69ee4
 const awsapi = require('./awsapi');
 const keyaws = require('./keysaws');
 const users = require('./users');
