@@ -51,8 +51,12 @@ function createUser(req, res) {
                 'username': response.nombre 
             } 
             let token = jwt.sign(user, SECRET, { expiresIn: 60*60*1 })
-            response.token=token;
-            res.json(response);
+            let json = {
+                "id":response._id,
+                "nombre":response.nombre,
+                "token":token
+            }
+            res.json(json);
         })
         .catch((err) => handdleError(err, res))
 }
@@ -75,7 +79,12 @@ function sessionUser(req,res){
                 'username': response.nombre 
             } 
             var token = jwt.sign(user, SECRET, { expiresIn: 60*60*1 })
-            res.json({token:token})
+            let json = {
+                "id":response._id,
+                "nombre":response.nombre,
+                "token":token
+            }
+            res.json(json);
         }else{
             res.status(401).send({
                 error: 'usuario o contraseña inválidos'
@@ -111,11 +120,13 @@ function sendEmail(id, email){
     
     
     let HelperOtions = {
-        from: '"Proyectazo" <proyecto.botslack@gmail.com',
+        from: '"Bot Cost Slack" <proyecto.botslack@gmail.com',
         to: email,
-        subject: 'Esto es otra prueba',
+        subject: 'Validate Email Slackbot',
         text: "FUNCIONA!!!!",
-        html: `<a href ="http://localhost:4000/users/validate/${id}">Click aqui para validar tu cuenta</a>`
+        html: `
+        Si quieres validar tu correo pincha en el enlace de abajo.
+        <a href ="http://localhost:4000/users/validate/${id}">Click aqui para validar tu cuenta aqui</a>`
     };
     
     transporter.sendMail(HelperOtions, (error, info) => {
