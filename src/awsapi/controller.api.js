@@ -1,9 +1,5 @@
 const axios = require('axios')
 const AWS = require('aws-sdk');
-/*
-key public: AKIAIZEESAFSFDXH3WHA 
-key private: KWR2Ssep1iIB9UGVYcaIi06fK8RwCPi0GtsKdeTs 
-*/
 
 const fakeParams = {
     "ResultsByTime": [
@@ -39,14 +35,15 @@ const fakeParams = {
 
 module.exports = {
     getBillByKeyFake: getBillByKeyFake,
-    getBillByKey: getBillByKey
+    getBillByDay: getBillByDay,
+    getBillByMonth: getBillByMonth
 }
 
 function getBillByKeyFake(req,res){
     res.send(fakeParams)
 }
 
-function getBillByKey(req,res){
+function getBillByDay(req,res){
     const publicAWSKey= req.query.publicAWSKey
     const privateAWSKey= req.query.privateAWSKey
     let fecha = new Date();
@@ -82,5 +79,9 @@ function getBillByKey(req,res){
          if (err) console.log(err, err.stack);
          else res.send(data);
      })
+}
 
+
+function getBillByMonth(req,res) {
+    
 }
