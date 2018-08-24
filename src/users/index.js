@@ -7,6 +7,6 @@ router.get('/', getAllUsers);
 router.post('/', createUser);
 router.post('/login', sessionUser);
 router.get('/validate/:id', validateEmail);
-router.patch('/:id', updateUser);
+//router.patch('/:id', updateUser);
 
 module.exports = router;
