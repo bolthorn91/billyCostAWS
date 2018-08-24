@@ -8,7 +8,15 @@ module.exports = {
     createKeys:updateKeys,  
     updateUser:updateUser,  
     deleteUser:deleteUser,
-    deleteKeys:deleteKeys
+    deleteKeys:deleteKeys,
+    getUserById:getUserById
+}
+
+
+function getUserById(req, res) {
+    UserModel.findById(req.params.id)
+        .then(response => res.json(response))
+        .catch((err) => handdleError(err, res))
 }
 
 function deleteUser(req, res) {

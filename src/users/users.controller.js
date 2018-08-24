@@ -8,33 +8,10 @@ const _UPDATE_DEFAULT_CONFIG = {
     runValidators: true
 }
 
-module.exports = {
-    getAllUsers:getAllUsers, 
-    getUserById:getUserById, 
+module.exports = { 
     createUser:createUser, 
-    updateUser:updateUser, 
-    deleteUser:deleteUser,
     validateEmail:validateEmail,
     sessionUser:sessionUser
-}
-
-function getAllUsers(req, res) {
-    UserModel.find()
-        .then(response => res.json(response))
-        .catch((err) => handdleError(err, res))
-
-}
-function getUserById(req, res) {
-    UserModel.findById(req.params.id)
-        .then(response => res.json(response))
-        .catch((err) => handdleError(err, res))
-}
-
-function deleteUser(req, res) {
-    UserModel.findById(req.params.id)
-        .remove()
-        .then(response => res.json(response))
-        .catch((err) => handdleError(err, res))
 }
 
 function createUser(req, res) {
@@ -92,12 +69,6 @@ function sessionUser(req,res){
         } 
     })
     .catch((err) => handdleError(err, res))
-}
-
-function updateUser(req, res) {
-    UserModel.findByIdAndUpdate(req.params.id, req.body, _UPDATE_DEFAULT_CONFIG)
-        .then(response => res.json(response))
-        .catch((err) => handdleError(err, res))
 }
 
 function handdleError(err, res){
