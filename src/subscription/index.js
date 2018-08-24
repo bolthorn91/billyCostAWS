@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const schedule = require('node-schedule')
 const axios = require('axios')
+axios.defaults.headers.common['authorization'] = 'soisunosputos';
+//axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 const config = require('../../.env');
 const userModel = require('../users/users.model')
 const options = config[process.env.NODE_ENV];
@@ -43,42 +45,83 @@ function subscriptionExec() {
         for (let i = 0; i < usersData.length; i++) {
             const user = usersData[i]
             if (user.subDay === true && user.lastDayCall != currentDayOfMonth.day) {
-                updateUser(user)
-                launchSlackBot()
+                const dayUpdate = true
+                updateUser(user, dayUpdate)
+                //launchSlackBot()
             }
             if (user.subDay === false) {
                 console.log('este usuario no esta suscrito', user._id)
                 dayGet(user)
             }
             else {
-                console.log('el usuario ' + user._id + 'ya hizo la peticion')
+                console.log('este usuario no esta suscrito a la petición diaria', user._id)
+                dailyRequest(user)
+            }
+            if (user.subMonth === true && user.lastMonthCall != currentDayOfMonth.month) {
+                const monthUpdate = true
+                updateUser(user, monthUpdate)
+                //launchSlackBot()
+            }
+            if (user.subMonth === false) {
+                console.log('este usuario no esta suscrito a la petición mensual', user._id)
+                //monthlyRequest(user)
+            }
+            else {
+                console.log('el usuario' + user._id + 'ya hizo su peticion')
             }
         }
     }
 
     getAllUsersSubs()
 
-    function updateUser(userData) {
-        console.log('a estos usuarios se les esta cambiando el dia:', userData)
-        const body = { lastDayCall: currentDayOfMonth.day }
-        userModel.findByIdAndUpdate(userData._id, body, _UPDATE_DEFAULT_CONFIG)
-            .then(response => console.log(response))
-            .catch((err) => handdleError(err, res))
+    function updateUser(userData, day, month) {
+        if (day = true) {
+            
+            console.log('a estos usuarios se les esta cambiando el dia:', userData)
+            const body = { lastDayCall: currentDayOfMonth.day }
+            userModel.findByIdAndUpdate(userData._id, body, _UPDATE_DEFAULT_CONFIG)
+                .then(response => console.log(response))
+                .catch((err) => handdleError(err, res))
+        }
+        if (month = true) {
+            
+            console.log('a estos usuarios se les esta cambiando el mes:', userData)
+            const body = { lastMonthCall: currentDayOfMonth.month }
+            userModel.findByIdAndUpdate(userData._id, body, _UPDATE_DEFAULT_CONFIG)
+                .then(response => console.log(response))
+                .catch((err) => handdleError(err, res))
+        }
     }
-
+/* 
     function launchSlackBot() {
         axios.get('http://localhost:4000/awsapi')
             .then(response => console.log(response.data))
             .catch((err) => handdleError(err, res))
     }
+ */
+    function dailyRequest(userData){
+        if (typeof(userData.publicAWSKey) != 'undefined' && typeof(userData.PrivateWSKeys) != 'undefined') {
+            axios.get(`http://localhost:4000/awsapi/day?publicAWSKey='${userData.userPublicKey}'
+            &privateAWSKey='${userData.PrivateWSKey}'`)
+            .then(response => console.log(response))
+            .catch((err) => console.log(err))
+        }
+    }
 
-    function dayGet(userData){
-        axios.get('http://localhost:4000/users/'+userData._id)
-        .then(response => console.log(response.data))
-        //.catch((err) => handdleError(err, res))
+
+    function monthlyRequest(userData){
+        if (typeof(userData.publicAWSKey) != 'undefined' && typeof(userData.PrivateWSKeys) != 'undefined') {
+            console.log("hola")
+            axios.get(`http://localhost:4000/awsapi/day?publicAWSKey='${userData.userPublicKey}'
+            &privateAWSKey='${userData.PrivateWSKey}'`)
+            .then(response => console.log(response))
+            .catch((err) => console.log(err))
+        }
     }
 }
 
 function handdleError(err, res) {
     return res.status(400).json(err)
 }
+
+//subscriptionExec()

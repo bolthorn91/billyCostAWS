@@ -33,8 +33,8 @@ const fakeParams = {
 
 module.exports = {
     getBillByKeyFake: getBillByKeyFake,
-    getBillDay: getBillDay,
-    getBillMonth: getBillMonth
+    getBillByDay: getBillByDay,
+    getBillByMonth: getBillByMonth
 }
 
 const jsonParams = require('./data/awsparams.json')
@@ -60,7 +60,7 @@ function getBillByKeyFake(req,res){
     res.send(fakeParams)
 }
 
-function getBillDay(req,res){
+function getBillByDay(req,res){
     const publicAWSKey= req.query.publicAWSKey
     const privateAWSKey= req.query.privateAWSKey
     let fecha = new Date();
@@ -96,11 +96,10 @@ function getBillDay(req,res){
          if (err) console.log(err, err.stack);
          else res.send(data);
      })
-
 }
 
 
-function getBillMonth(req,res){
+function getBillByMonth(req,res){
     const publicAWSKey= req.query.publicAWSKey
     const privateAWSKey= req.query.privateAWSKey
     
