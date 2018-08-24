@@ -50,10 +50,6 @@ function subscriptionExec() {
                 //launchSlackBot()
             }
             if (user.subDay === false) {
-                console.log('este usuario no esta suscrito', user._id)
-                dayGet(user)
-            }
-            else {
                 console.log('este usuario no esta suscrito a la petición diaria', user._id)
                 dailyRequest(user)
             }
@@ -124,4 +120,4 @@ function handdleError(err, res) {
     return res.status(400).json(err)
 }
 
-//subscriptionExec()
+subscriptionExec()
