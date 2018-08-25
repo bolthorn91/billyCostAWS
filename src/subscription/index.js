@@ -51,7 +51,6 @@ function subscriptionExec() {
             }
             if (user.subDay === false) {
                 console.log('este usuario no esta suscrito a la petición diaria', user._id)
-                dailyRequest(user)
             }
             if (user.subMonth === true && user.lastMonthCall != currentDayOfMonth.month) {
                 const monthUpdate = true
@@ -63,6 +62,7 @@ function subscriptionExec() {
                 //monthlyRequest(user)
             }
             else {
+                dailyRequest(user)
                 console.log('el usuario' + user._id + 'ya hizo su peticion')
             }
         }
@@ -71,16 +71,15 @@ function subscriptionExec() {
     getAllUsersSubs()
 
     function updateUser(userData, day, month) {
-        if (day = true) {
-            
+        if (day = true) { 
             console.log('a estos usuarios se les esta cambiando el dia:', userData)
             const body = { lastDayCall: currentDayOfMonth.day }
             userModel.findByIdAndUpdate(userData._id, body, _UPDATE_DEFAULT_CONFIG)
                 .then(response => console.log(response))
                 .catch((err) => handdleError(err, res))
         }
-        if (month = true) {
-            
+        
+        if (month = true) { 
             console.log('a estos usuarios se les esta cambiando el mes:', userData)
             const body = { lastMonthCall: currentDayOfMonth.month }
             userModel.findByIdAndUpdate(userData._id, body, _UPDATE_DEFAULT_CONFIG)
@@ -96,22 +95,20 @@ function subscriptionExec() {
     }
  */
     function dailyRequest(userData){
-        if (typeof(userData.publicAWSKey) != 'undefined' && typeof(userData.PrivateWSKeys) != 'undefined') {
-            axios.get(`http://localhost:4000/awsapi/day?publicAWSKey='${userData.userPublicKey}'
-            &privateAWSKey='${userData.PrivateWSKey}'`)
-            .then(response => console.log(response))
-            .catch((err) => console.log(err))
+        if (userData.publicAWSKey != null || userData.privateAWSKey != null) {
+            axios.get(`http://localhost:4000/awsapi/day?publicAWSKey='${userData.publicAWSKey}'
+            &privateAWSKey='${userData.privateAWSKey}'`)
+            .then(response => response.data)
+            .catch(err => console.log(err))
         }
     }
 
-
     function monthlyRequest(userData){
-        if (typeof(userData.publicAWSKey) != 'undefined' && typeof(userData.PrivateWSKeys) != 'undefined') {
-            console.log("hola")
-            axios.get(`http://localhost:4000/awsapi/day?publicAWSKey='${userData.userPublicKey}'
-            &privateAWSKey='${userData.PrivateWSKey}'`)
-            .then(response => console.log(response))
-            .catch((err) => console.log(err))
+        if (userData.publicAWSKey != null || userData.privateAWSKey != null) {
+            axios.get(`http://localhost:4000/awsapi/month?publicAWSKey='${userData.publicAWSKey}'
+            &privateAWSKey='${userData.privateAWSKey}'`)
+            .then(response => response.data)
+            .catch(err => console.log(err))
         }
     }
 }

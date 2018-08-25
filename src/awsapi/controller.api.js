@@ -40,23 +40,7 @@ module.exports = {
 const jsonParams = require('./data/awsparams.json')
 
 function getBillByKeyFake(req,res){
-    const publicAWSKey= req.query.publicAWSKey
-    const privateAWSKey= req.query.privateAWSKey
-    const reqParams=req.query.params
-    
-    let fecha = new Date();
-    let fechAct= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
-    let tiempo=fecha.getTime();
-    let milisegundos=parseInt(1*24*60*60*1000);
-    total=fecha.setTime(tiempo-milisegundos);
-    day=fecha.getDate();
-    month=fecha.getMonth()+1;
-    year=fecha.getFullYear();
-    let fechAnt= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
-    console.log (fechAnt, fechAct, jsonParams.Metrics)
-
-    if(reqParams === jsonParams.Metrics)
-
+    console.log(req.query.publicAWSKey, req.query.privateAWSKey)
     res.send(fakeParams)
 }
 
@@ -91,11 +75,11 @@ function getBillByDay(req,res){
          Metrics: ["AmortizedCost", "BlendedCost", "UnblendedCost", "UsageQuantity"]
      }
 
-
-     costexplorer.getCostAndUsage(params, function (err, data) {
+     console.log(fechAct, fechAnt, publicAWSKey, privateAWSKey)
+     /*costexplorer.getCostAndUsage(params, function (err, data) {
          if (err) console.log(err, err.stack);
          else res.send(data);
-     })
+     })*/
 }
 
 
@@ -104,14 +88,8 @@ function getBillByMonth(req,res){
     const privateAWSKey= req.query.privateAWSKey
     
     let fecha = new Date();
-    let fechAct= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
-    let tiempo=fecha.getTime();
-    let milisegundos=parseInt(1*24*60*60*1000);
-    total=fecha.setTime(tiempo-milisegundos);
-    day=fecha.getDate();
-    month=fecha.getMonth()+1;
-    year=fecha.getFullYear();
-    let fechAnt= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
+    let fechAct= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + '01';
+    let fechAnt= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 0)).slice(-2) + "-" + '01';
 
     const creds = new AWS.Credentials({
          accessKeyId: publicAWSKey, secretAccessKey: privateAWSKey
@@ -125,18 +103,18 @@ function getBillByMonth(req,res){
 
 
      const params = {
-         Granularity: 'DAILY',
+         Granularity: 'MONTHLY',
          TimePeriod: {
              Start: fechAnt, // required 
              End: fechAct, // required 
         },
          Metrics: ["AmortizedCost", "BlendedCost", "UnblendedCost", "UsageQuantity"]
      }
+    console.log(fechAct, fechAnt, publicAWSKey, privateAWSKey)
 
-
-     costexplorer.getCostAndUsage(params, function (err, data) {
+     /*costexplorer.getCostAndUsage(params, function (err, data) {
          if (err) console.log(err, err.stack);
          else res.send(data);
-     })
+     })*/
 
 }

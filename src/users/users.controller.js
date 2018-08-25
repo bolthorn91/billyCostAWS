@@ -11,7 +11,8 @@ const _UPDATE_DEFAULT_CONFIG = {
 module.exports = { 
     createUser:createUser, 
     validateEmail:validateEmail,
-    sessionUser:sessionUser
+    sessionUser:sessionUser,
+    getUsers:getUsers
 }
 
 function createUser(req, res) {
@@ -107,3 +108,8 @@ function sendEmail(id, email){
     });
 }
    
+function getUsers(req, res) {
+    UserModel.find()
+    .then(response => res.json(response))
+
+}
