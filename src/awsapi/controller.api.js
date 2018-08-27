@@ -45,8 +45,6 @@ function getBillByKeyFake(req,res){
 }
 
 function getBillByDay(req,res){
-    const publicAWSKey= req.query.publicAWSKey
-    const privateAWSKey= req.query.privateAWSKey
     let fecha = new Date();
     let fechAct= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
     let tiempo=fecha.getTime();
@@ -58,9 +56,12 @@ function getBillByDay(req,res){
     let fechAnt= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
 
     const creds = new AWS.Credentials({
-         accessKeyId: publicAWSKey, secretAccessKey: privateAWSKey
-     });
+        accessKeyId: req.query.publicAWSKey, 
+         secretAccessKey: req.query.privateAWSKey,
+    });
+
      AWS.config.credentials = creds;
+     console.log(AWS.config.credentials)
 
      const costexplorer = new AWS.CostExplorer({
          apiVersion: '2017-10-25',
@@ -75,24 +76,20 @@ function getBillByDay(req,res){
          Metrics: ["AmortizedCost", "BlendedCost", "UnblendedCost", "UsageQuantity"]
      }
 
-     console.log(fechAct, fechAnt, publicAWSKey, privateAWSKey)
-     /*costexplorer.getCostAndUsage(params, function (err, data) {
+     costexplorer.getCostAndUsage(params, function (err, data) {
          if (err) console.log(err, err.stack);
          else res.send(data);
-     })*/
+     })
 }
 
 
 function getBillByMonth(req,res){
-    const publicAWSKey= req.query.publicAWSKey
-    const privateAWSKey= req.query.privateAWSKey
-    
     let fecha = new Date();
     let fechAct= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + '01';
     let fechAnt= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 0)).slice(-2) + "-" + '01';
 
     const creds = new AWS.Credentials({
-         accessKeyId: publicAWSKey, secretAccessKey: privateAWSKey
+         accessKeyId: req.query.publicAWSKey, secretAccessKey: req.query.privateAWSKey
      });
      AWS.config.credentials = creds;
 
@@ -110,11 +107,10 @@ function getBillByMonth(req,res){
         },
          Metrics: ["AmortizedCost", "BlendedCost", "UnblendedCost", "UsageQuantity"]
      }
-    console.log(fechAct, fechAnt, publicAWSKey, privateAWSKey)
 
-     /*costexplorer.getCostAndUsage(params, function (err, data) {
+     costexplorer.getCostAndUsage(params, function (err, data) {
          if (err) console.log(err, err.stack);
          else res.send(data);
-     })*/
+     })
 
 }

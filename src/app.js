@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use('/users', users);
 
 // Midleware de json web token
-app.use(function(req, res, next){
+ app.use(function(req, res, next){
     let token = req.headers['authorization']
     if(!token){
         res.status(401).send({

@@ -51,6 +51,7 @@ function subscriptionExec() {
             }
             if (user.subDay === false) {
                 console.log('este usuario no esta suscrito a la petición diaria', user._id)
+                dailyRequest(user)
             }
             if (user.subMonth === true && user.lastMonthCall != currentDayOfMonth.month) {
                 const monthUpdate = true
@@ -62,7 +63,7 @@ function subscriptionExec() {
                 //monthlyRequest(user)
             }
             else {
-                dailyRequest(user)
+                //dailyRequest(user)
                 console.log('el usuario' + user._id + 'ya hizo su peticion')
             }
         }
@@ -87,18 +88,14 @@ function subscriptionExec() {
                 .catch((err) => handdleError(err, res))
         }
     }
-/* 
-    function launchSlackBot() {
-        axios.get('http://localhost:4000/awsapi')
-            .then(response => console.log(response.data))
-            .catch((err) => handdleError(err, res))
-    }
- */
+
+
     function dailyRequest(userData){
         if (userData.publicAWSKey != null || userData.privateAWSKey != null) {
-            axios.get(`http://localhost:4000/awsapi/day?publicAWSKey='${userData.publicAWSKey}'
-            &privateAWSKey='${userData.privateAWSKey}'`)
-            .then(response => response.data)
+            console.log()
+            axios.get(`http://localhost:4000/awsapi/day?publicAWSKey=${userData.publicAWSKey}&privateAWSKey=${userData.privateAWSKey}`)
+            .then(response => console.log(response.data))
+                //response.data)
             .catch(err => console.log(err))
         }
     }
