@@ -1,0 +1,30 @@
+{
+"ResultsByTime": [
+    {
+        "TimePeriod": {
+            "Start": "2018-08-26",
+            "End": "2018-08-25"
+        },
+        "Total": {
+            "AmortizedCost": {
+                "Amount": "0",
+                "Unit": "USD"
+            },
+            "BlendedCost": {
+                "Amount": "0",
+                "Unit": "USD"
+            },
+            "UnblendedCost": {
+                "Amount": "0",
+                "Unit": "USD"
+            },
+            "UsageQuantity": {
+                "Amount": "63.3472910715",
+                "Unit": "N/A"
+            }
+        },
+        "Groups": [],
+        "Estimated": true
+    }
+]
+}
