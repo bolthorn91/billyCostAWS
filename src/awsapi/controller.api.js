@@ -34,7 +34,7 @@ const fakeParams = {
 module.exports = {
     getBillByKeyFake: getBillByKeyFake,
     getBillByDay: getBillByDay,
-    getBillByMonth: getBillByMonth
+    getBillByMonth: getBillByMonth,
 }
 
 const jsonParams = require('./data/awsparams.json')
@@ -54,6 +54,13 @@ function getBillByDay(req,res){
     month=fecha.getMonth()+1;
     year=fecha.getFullYear();
     let fechAnt= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
+    
+    
+    if (req.query.dayStart != null && req.query.dayEnd != null) {
+    fechAnt = req.query.dayStart
+    fechAct = req.query.dayEnd
+    }
+
 
     const creds = new AWS.Credentials({
         accessKeyId: req.query.publicAWSKey, 
@@ -88,6 +95,11 @@ function getBillByMonth(req,res){
     let fechAct= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + '01';
     let fechAnt= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 0)).slice(-2) + "-" + '01';
 
+    if (req.query.monthStart != null && req.query.monthEnd != null) {
+        fechAnt = req.query.monthStart
+        fechAct = req.query.monthEnd
+    }
+    
     const creds = new AWS.Credentials({
          accessKeyId: req.query.publicAWSKey, secretAccessKey: req.query.privateAWSKey
      });
@@ -107,6 +119,7 @@ function getBillByMonth(req,res){
         },
          Metrics: ["AmortizedCost", "BlendedCost", "UnblendedCost", "UsageQuantity"]
      }
+
 
      costexplorer.getCostAndUsage(params, function (err, data) {
          if (err) console.log(err, err.stack);
