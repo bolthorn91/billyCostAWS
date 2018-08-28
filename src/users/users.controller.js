@@ -1,38 +1,43 @@
 const UserModel = require('./users.model');
 const nodemailer = require('nodemailer');
-var bcrypt = require('bcrypt');
-const SECRET = "tumamasita"
+var bcrypt = require('bcryptjs');
+const SECRET = "tumamasita";
 const jwt = require('jsonwebtoken');
 const _UPDATE_DEFAULT_CONFIG = {
     new: true,
     runValidators: true
 }
 
-module.exports = { 
-    createUser:createUser, 
-    validateEmail:validateEmail,
-    sessionUser:sessionUser,
-    getUsers:getUsers
+module.exports = {
+    createUser: createUser,
+    validateEmail: validateEmail,
+    sessionUser: sessionUser,
+    getUsers: getUsers
 }
 
 function createUser(req, res) {
-    req.body.createdAt=new Date()
-    req.body.isActive=false;
-    req.body.subDay=false;
-    req.body.subMonth=false;
-    req.body.lastDayCall= 0,
-    req.body.lastMonthCall= 0,
+    req.body.createdAt = new Date()
+    req.body.isActive = false;
+    req.body.subDay = false;
+    req.body.subMonth = false;
+    req.body.lastDayCall = 0;
+    req.body.lastMonthCall = 0;
+    req.body.peticiones = [];
+    const hash = bcrypt.hashSync(req.body.password, 10);
+    console.log(hash);
+    req.body.password = hash;
+    //req.body.password=bpass;
     UserModel.create(req.body)
         .then((response) => {
             sendEmail(response._id, response.email)
-            let user = { 
-                'username': response.nombre 
-            } 
-            let token = jwt.sign(user, SECRET, { expiresIn: 60*60*1 })
+            let user = {
+                'username': response.nombre
+            }
+            let token = jwt.sign(user, SECRET, { expiresIn: 60 * 60 * 1 })
             let json = {
-                "id":response._id,
-                "nombre":response.nombre,
-                "token":token
+                "id": response._id,
+                "nombre": response.nombre,
+                "token": token
             }
             res.json(json);
         })
@@ -40,48 +45,55 @@ function createUser(req, res) {
 }
 
 function validateEmail(req, res) {
-    req.body.isActive=true;
-     UserModel.findByIdAndUpdate(req.params.id, req.body, _UPDATE_DEFAULT_CONFIG)
+    req.body.isActive = true;
+    UserModel.findByIdAndUpdate(req.params.id, req.body, _UPDATE_DEFAULT_CONFIG)
         .then(response => res.json(response))
         .catch((err) => handdleError(err, res))
 }
 
-function sessionUser(req,res){
+function sessionUser(req, res) {
     UserModel.findOne({
-        email:req.body.email,
-        password:req.body.password
+        email: req.body.email
     })
-    .then((response) => {
-        if(response!=null){
-            var user = { 
-                'username': response.nombre 
+        .then((response) => {
+            if (response != null) {
+                const result = bcrypt.compareSync(req.body.password, response.password)
+                if (result) {
+                    var user = {
+                        'username': response.nombre
+                    }
+                    var token = jwt.sign(user, SECRET, { expiresIn: 60 * 60 * 1 })
+                    let json = {
+                        "id": response._id,
+                        "nombre": response.nombre,
+                        "token": token
+                    }
+                    res.json(json);
+                } else {
+                    res.status(401).send({
+                        error: 'contraseña inválida'
+                    })
+                }
+            } {
+                res.status(401).send({
+                    error: 'Email inválido'
+                })
             } 
-            var token = jwt.sign(user, SECRET, { expiresIn: 60*60*1 })
-            let json = {
-                "id":response._id,
-                "nombre":response.nombre,
-                "token":token
-            }
-            res.json(json);
-        }else{
-            res.status(401).send({
-                error: 'usuario o contraseña inválidos'
-            })
-        } 
-    })
-    .catch((err) => handdleError(err, res))
+
+        })
+        .catch((err) => handdleError(err, res))
 }
 
-function handdleError(err, res){
+function handdleError(err, res) {
     return res.status(400).json(err);
 }
 
-function sendEmail(id, email){
+function sendEmail(id, email) {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         secure: false,
         port: 25,
-        auth:{
+        auth: {
             user: 'proyecto.botslack@gmail.com',
             pass: 'proyectobotslack1.'
         },
@@ -89,8 +101,8 @@ function sendEmail(id, email){
             rejectUnauthorized: false
         }
     });
-    
-    
+
+
     let HelperOtions = {
         from: '"Bot Cost Slack" <proyecto.botslack@gmail.com',
         to: email,
@@ -100,16 +112,16 @@ function sendEmail(id, email){
         Si quieres validar tu correo pincha en el enlace de abajo.
         <a href ="http://localhost:4000/users/validate/${id}">Click aqui para validar tu cuenta aqui</a>`
     };
-    
+
     transporter.sendMail(HelperOtions, (error, info) => {
-        if(error) {
+        if (error) {
             return console.log(error);
         }
     });
 }
-   
+
 function getUsers(req, res) {
     UserModel.find()
-    .then(response => res.json(response))
+        .then(response => res.json(response))
 
 }

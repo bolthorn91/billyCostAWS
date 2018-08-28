@@ -21,13 +21,9 @@ const UserSchema = mongoose.Schema({
     subMonth: Boolean,
     lastDayCall: Number,
     lastMonthCall: Number,
+    peticiones: Array,
     token: String
 });
-
-// UserSchema.methods.comparePassword = function(password){
-//     return bcrypt.compareSync(password, this.hash_password);
-// }
-
 const users = mongoose.model('user', UserSchema);
 
 module.exports = users;
