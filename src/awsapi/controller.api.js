@@ -167,41 +167,6 @@ function valuesAWS(publicAWSKey, privateAWSKey) {
     });
 }
 
-function getAllBillFake(req, res) {
-    const ws = fs.createWriteStream('costos.csv');
-
-
-    let array = [];
-    
-    for(let i = 0;i<bill.data.length;i++){
-        let type = bill.data[i]
-        array.push(Object.keys(type))
-        let object = type[Object.keys(type)[0]]
-        let variables = ["Fecha", "Gasto", "Moneda" ]
-        array.push(variables)
-        for(let j = 0;j<object.length;j++){
-            let variables_reales=[object[j].TimePeriod.Start, object[j].Total.AmortizedCost.Amount, object[j].Total.AmortizedCost.Unit]
-            array.push(variables_reales)
-        }
-        array.push([""])
-    }
-    csv.write(array, { headers: true }).pipe(ws);
-    res.download("costos.csv");
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var bill = {"data": [
     {"allMonth": [
         {
@@ -1508,4 +1473,46 @@ var bill = {"data": [
         }
     ]}
 ]}
+
+
+
+async function getAllBillFake(req, res) {
+    const ws = "";
+    let array = await arrayBillCSV();
+    console.log(array)
+    csv.write(array, { headers: true }).pipe(fs.createWriteStream('costos.csv'))
+    setTimeout(function(){ res.download("costos.csv") }, 2000);
+}
+
+
+function arrayBillCSV(){
+    let array = [];
+    
+    for(let i = 0;i<bill.data.length;i++){
+        let type = bill.data[i]
+        array.push(Object.keys(type))
+        let object = type[Object.keys(type)[0]]
+        let variables = ["Fecha", "Gasto", "Moneda" ]
+        array.push(variables)
+        for(let j = 0;j<object.length;j++){
+            let variables_reales=[object[j].TimePeriod.Start, object[j].Total.AmortizedCost.Amount, object[j].Total.AmortizedCost.Unit]
+            array.push(variables_reales)
+        }
+        array.push([""])
+    }
+    return array;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 

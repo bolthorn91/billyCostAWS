@@ -5,16 +5,16 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: [true, 'Nombre requerido.'],
         minlength: [6, 'Haz de introducir mínimo 6 caracteres.'],
-        unique : false 
+        unique: false
     },
     email: {
         type: String,
         required: [true, 'Email requerido.'],
         unique: true
     },
-    password:String,
-    publicAWSKey:String,
-    privateAWSKey:String,
+    password: String,
+    publicAWSKey: String,
+    privateAWSKey: String,
     createdAt: Number,
     isActive: Boolean,
     subDay: Boolean,
@@ -22,7 +22,10 @@ const UserSchema = mongoose.Schema({
     lastDayCall: Number,
     lastMonthCall: Number,
     peticiones: Array,
-    token: String
+    token: String,
+    slackUserId: String,
+    slackConnected: Boolean,
+    slackURL: String,
 });
 const users = mongoose.model('user', UserSchema);
 
