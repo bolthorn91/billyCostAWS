@@ -35,7 +35,10 @@ module.exports = {
     getBillByKeyFake: getBillByKeyFake,
     getBillByDay: getBillByDay,
     getBillByMonth: getBillByMonth,
+<<<<<<< HEAD
     getAllBillFake:getAllBillFake
+=======
+>>>>>>> 25d75ed1547dd15dceff26e9d93e52c1ab9f1d54
 }
 
 const jsonParams = require('./data/awsparams.json')
@@ -47,14 +50,21 @@ function getBillByKeyFake(req, res) {
 
 function getBillByDay(req, res) {
     let fecha = new Date();
-    let fechAct = fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
-    let tiempo = fecha.getTime();
-    let milisegundos = parseInt(1 * 24 * 60 * 60 * 1000);
-    total = fecha.setTime(tiempo - milisegundos);
-    day = fecha.getDate();
-    month = fecha.getMonth() + 1;
-    year = fecha.getFullYear();
-    let fechAnt = fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
+    let fechAct= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
+    let tiempo=fecha.getTime();
+    let milisegundos=parseInt(1*24*60*60*1000);
+    total=fecha.setTime(tiempo-milisegundos);
+    day=fecha.getDate();
+    month=fecha.getMonth()+1;
+    year=fecha.getFullYear();
+    let fechAnt= fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + fecha.getDate();
+    
+    
+    if (req.query.dayStart != null && req.query.dayEnd != null) {
+    fechAnt = req.query.dayStart
+    fechAct = req.query.dayEnd
+    }
+
 
     const creds = new AWS.Credentials({
         accessKeyId: req.body.publicAWSKey,
@@ -93,6 +103,11 @@ function getBillByMonth(req, res) {
     let fechAct = fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 1)).slice(-2) + "-" + '01';
     let fechAnt = fecha.getFullYear() + "-" + ("0" + (fecha.getMonth() + 0)).slice(-2) + "-" + '01';
 
+    if (req.query.monthStart != null && req.query.monthEnd != null) {
+        fechAnt = req.query.monthStart
+        fechAct = req.query.monthEnd
+    }
+    
     const creds = new AWS.Credentials({
         accessKeyId: req.query.publicAWSKey, secretAccessKey: req.query.privateAWSKey
     });
@@ -119,8 +134,6 @@ function getBillByMonth(req, res) {
     })
 
 }
-
-
 
 function valuesAWS(publicAWSKey, privateAWSKey) {
     const creds = new AWS.Credentials({
