@@ -6,5 +6,5 @@ module.exports = router;
 router.get('/', controller.getBillByKeyFake)
 router.post('/day', controller.getBillByDay)
 router.get('/month', controller.getBillByMonth)
-router.post('/allmonth', controller.getAllBillFake)
+router.get('/allmonth', controller.getAllBillFake)
 
