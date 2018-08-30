@@ -67,7 +67,8 @@ function sessionUser(req, res) {
                     let json = {
                         "id": response._id,
                         "nombre": response.nombre,
-                        "token": token
+                        "token": token,
+                        "isActive":response.isActive
                     }
                     res.json(json);
                 } else {
