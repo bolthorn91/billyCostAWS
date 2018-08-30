@@ -973,7 +973,7 @@ function getAllBillFake(req, res) {
         array.push([""])
     }
     csv.write(array, { headers: true }).pipe(ws);
-    res.download("costos.csv");
+    setTimeout(function(){ res.download("costos.csv") }, 2000);;
 }
 
 
