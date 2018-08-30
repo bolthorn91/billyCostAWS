@@ -817,9 +817,7 @@ const fakeParams = {
             },
             "Groups": [],
             "Estimated": true
-        }        
-
-
+        }
     ]
 }
 

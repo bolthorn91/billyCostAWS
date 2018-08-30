@@ -23,10 +23,12 @@ function createUser(req, res) {
     req.body.lastDayCall = 0;
     req.body.lastMonthCall = 0;
     req.body.peticiones = [];
+    req.body.slackUserId = "";
+    req.body.slackConnected = false;
+    req.body.slackURL = "";
     const hash = bcrypt.hashSync(req.body.password, 10);
     console.log(hash);
     req.body.password = hash;
-    //req.body.password=bpass;
     UserModel.create(req.body)
         .then((response) => {
             sendEmail(response._id, response.email)
