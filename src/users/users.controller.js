@@ -27,7 +27,6 @@ function createUser(req, res) {
     req.body.slackConnected = false;
     req.body.slackURL = "";
     const hash = bcrypt.hashSync(req.body.password, 10);
-    console.log(hash);
     req.body.password = hash;
     UserModel.create(req.body)
         .then((response) => {
@@ -49,7 +48,7 @@ function createUser(req, res) {
 function validateEmail(req, res) {
     req.body.isActive = true;
     UserModel.findByIdAndUpdate(req.params.id, req.body, _UPDATE_DEFAULT_CONFIG)
-        .then(response => res.json(response))
+        .then(response => res.redirect("http://billycost.hopto.org/"))
         .catch((err) => handdleError(err, res))
 }
 
@@ -112,7 +111,7 @@ function sendEmail(id, email) {
         text: "FUNCIONA!!!!",
         html: `
         Si quieres validar tu correo pincha en el enlace de abajo.
-        <a href ="http://localhost:4000/users/validate/${id}">Click aqui para validar tu cuenta aqui</a>`
+        <a href ="http://billycost.hopto.org:3030/users/validate/${id}">Click aqui para validar tu cuenta aqui</a>`
     };
 
     transporter.sendMail(HelperOtions, (error, info) => {
